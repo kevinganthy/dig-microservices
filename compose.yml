@@ -1,0 +1,123 @@
+services:
+  api-gateway:
+    build:
+      context: ./api-gateway
+    volumes:
+      - ./api-gateway:/app
+    ports:
+      - 3000:3000
+    # depends_on:
+    #   products:
+    #     condition: service_started
+    #   cart:
+    #     condition: service_started
+    #   redis:
+    #     condition: service_started
+    #   db-gateway:
+    #     condition: service_healthy
+    networks:
+      - network-services
+      - network-gateway
+      - network-redis
+
+  db-gateway:
+    image: postgres:latest
+    restart: always
+    env_file:
+      - ./api-gateway/.env
+    volumes:
+      - db-gateway:/var/lib/postgresql/data
+      # - ./sql/gateway.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - network-gateway
+      - network-redis
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    
+  products:
+    build:
+      context: ./products
+    volumes:
+      - ./products:/app
+    ports:
+      - 3001:3000
+    depends_on:
+      db-products:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - network-services
+      - network-products
+      - network-redis
+
+  db-products:
+    image: postgres:latest
+    restart: always
+    env_file:
+      - ./products/.env
+    volumes:
+      - db-gateway:/var/lib/postgresql/data
+      # - ./sql/products.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - network-products
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  cart:
+    build:
+      context: ./cart
+    volumes:
+      - ./cart:/app
+    ports:
+      - 3002:3000
+    depends_on:
+      db-cart:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - network-services
+      - network-cart
+      - network-redis
+
+  db-cart:
+    image: mongo:latest
+    restart: always
+    command: mongod --quiet --logpath /dev/null  
+    env_file:
+      - ./cart/.env
+    volumes: 
+      - db-cart:/data/db
+      # - ./cart.js:/docker-entrypoint-initdb.d/init.js:ro
+    networks:
+      - network-cart
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.runCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  redis:
+    image: redis:latest
+    networks:
+      - network-redis
+
+
+volumes:
+  db-gateway:
+  db-products:
+  db-cart:
+
+networks:
+  network-services:
+  network-products:
+  network-cart:
+  network-gateway:
+  network-redis:
