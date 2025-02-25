@@ -6,9 +6,8 @@ COPY package*.json .
 
 RUN npm install
 
-# COPY . .
+COPY . .
 
 EXPOSE 3000
 
-# CMD ["npm", "run", "dev"]
-CMD ls -la && ls -la node_modules
+CMD ["npm", "run", "dev"]
