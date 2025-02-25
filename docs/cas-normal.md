@@ -49,4 +49,4 @@ Dans la vraie vie, elle est peu utilisée dans les petites structures ou pour de
 
 ---
 
-Suivant : [Architecture simplifiée](./cas-simplifié.md)
+Suivant : [Architecture simplifiée](./cas-simplifie.md)
