@@ -1,5 +1,5 @@
-db.createCollection('cart');
-db.cart.insert([
+db.createCollection('carts');
+db.carts.insert([
   {
     client_id: 1,
     cart: [
