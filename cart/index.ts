@@ -6,23 +6,23 @@ const app = express();
 const PORT = 3000;
 
 app.use(bodyParser.json());
-
-// MongoDB connection
 mongoose.connect('mongodb://db-cart:27017/cart');
 
+
+
 interface IProduct {
-  product_id: number;
+  product_id: Number;
   quantity: number;
 }
 
 interface ICart extends Document {
   client_id: number;
-  cart: IProduct[];
+  content: IProduct[];
 }
 
 const cartSchema: Schema = new mongoose.Schema({
   client_id: { type: Number, required: true },
-  cart: [
+  content: [
     {
       product_id: { type: Number, required: true },
       quantity: { type: Number, required: true },
@@ -32,23 +32,16 @@ const cartSchema: Schema = new mongoose.Schema({
 
 const Cart = mongoose.model<ICart>('Cart', cartSchema);
 
+
+
 app.get('/', (_req: Request, res: Response): void => {
   res.send('Hello from Cart Service');
 });
 
-app.get('/carts', async (_req: Request, res: Response): Promise<void> => {
+app.get('/carts/clients/:id', async (req: Request, res: Response): Promise<void> => {
+  const clientId = req.params.id;
   try {
-    const carts = await Cart.find();
-    res.json(carts);
-  } catch (error) {
-    res.status(500).send((error as Error)?.message);
-  }
-});
-
-app.get('/carts/:id', async (req: Request, res: Response): Promise<void> => {
-  const cartId = req.params.id;
-  try {
-    const cart = await Cart.findOne({ _id: cartId });
+    const cart = await Cart.findOne({ client_id: Number(clientId) });
     if (cart) {
       res.json(cart);
     } else {
@@ -59,21 +52,36 @@ app.get('/carts/:id', async (req: Request, res: Response): Promise<void> => {
   }
 });
 
-app.post('/carts/:id/product/:productId', async (req: Request, res: Response): Promise<void> => {
-  const cartId = req.params.id;
-  const productId = req.params.productId;
-  const { quantity }: { quantity: number } = req.body;
+app.put('/carts/clients/:id/product', async (req: Request, res: Response): Promise<void> => {
+  const clientId = req.params.id;
+  const { quantity, product_id }: { quantity: number, product_id: number } = req.body;
+
   try {
-    let cart = await Cart.findOne({ client_id: Number(cartId) });
+    // Look for a cart with the client_id
+    let cart = await Cart.findOne({ client_id: Number(clientId) });
+
+    // Create a new cart if it doesn't exist
     if (!cart) {
-      cart = new Cart({ client_id: Number(cartId), cart: [] });
+      cart = new Cart({ client_id: Number(clientId), content: [] });
     }
-    const productIndex = cart.cart.findIndex((item: IProduct) => item.product_id === Number(productId));
+
+    // Check if the product is already in the cart
+    const productIndex = cart.content.findIndex((item: IProduct) => item.product_id === Number(product_id));
+    
     if (productIndex > -1) {
-      cart.cart[productIndex].quantity += quantity;
+      // Add the quantity to the existing product
+      cart.content[productIndex].quantity += quantity;
+
+      // If quantity is 0, remove the product from the cart
+      if (cart.content[productIndex].quantity === 0) {
+        cart.content.splice(productIndex, 1);
+      }
     } else {
-      cart.cart.push({ product_id: Number(productId), quantity });
+      // Add the product to the cart
+      cart.content.push({ product_id, quantity });
     }
+
+    // Save and return the cart
     await cart.save();
     res.json(cart);
   } catch (error) {
@@ -81,28 +89,7 @@ app.post('/carts/:id/product/:productId', async (req: Request, res: Response): P
   }
 });
 
-app.put('/carts/:id/product/:productId', async (req: Request, res: Response): Promise<void> => {
-  const cartId = req.params.id;
-  const productId = req.params.productId;
-  const { quantity }: { quantity: number } = req.body;
-  try {
-    const cart = await Cart.findOne({ client_id: Number(cartId) });
-    if (cart) {
-      const productIndex = cart.cart.findIndex((item: IProduct) => item.product_id === Number(productId));
-      if (productIndex > -1) {
-        cart.cart[productIndex].quantity = quantity;
-        await cart.save();
-        res.json(cart);
-      } else {
-        res.status(404).send('Product not found in cart');
-      }
-    } else {
-      res.status(404).send('Cart not found');
-    }
-  } catch (error) {
-    res.status(500).send((error as Error)?.message);
-  }
-});
+
 
 app.listen(PORT, (): void => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);

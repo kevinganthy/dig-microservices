@@ -2,7 +2,7 @@ db.createCollection('carts');
 db.carts.insert([
   {
     client_id: 1,
-    cart: [
+    content: [
       {
         product_id: 1,
         quantity: 1

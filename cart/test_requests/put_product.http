@@ -1,0 +1,7 @@
+PUT http://localhost:3002/carts/clients/2/product
+content-type: application/json
+
+{
+    "product_id": 1,
+    "quantity": 7
+}

@@ -25,9 +25,8 @@ Les services seront simplifiés et ne comporteront que les endpoints principaux 
   * `POST /products` : Crée un produit
   * `PUT /products/:id` : Modifie un produit
 * Carts
-  * `GET /carts/:id` : Récupère le panier d'un utilisateur
-  * `POST /carts/:id/product/:id` : Ajoute un produit au panier, crée le panier si inexistant
-  * `PUT /carts/:id/product/:id` : Modifie la quantité d'un produit dans le panier
+  * `GET /carts/clients/:id` : Récupère le panier d'un utilisateur
+  * `PUT /carts/clients/:id/product` : Ajoute ou modifie un produit dans le panier. Crée le panier si besoin. Supprime le produit si quantité finale à 0.
 
 L'API Gateway se chargera de filtrer les requêtes en fonction de l'utilisateur avec un middleware, puis de les rediriger vers le service approprié.
 
@@ -38,9 +37,9 @@ L'API Gateway se chargera de filtrer les requêtes en fonction de l'utilisateur 
 | /auth | public | | ✅ | | |
 | /products | admin | ✅ | ✅ | ✅ | |
 |  | user | ✅ | | | |
-| /carts/:id | admin | ✅ | | | |
+| /carts/clients/:id | admin | ✅ | | | |
 |  | user | 👤 | | | |
-| /carts/:id/product/:id | admin | ✅ | ✅ | ✅ | |
-|  | user | 👤 | 👤 | 👤 | |
+| /carts/clients/:id/product | admin | | | ✅ | |
+|  | user | | | 👤 | |
 
 ✅ autorisé 👤 autorisé sur les données appartenant à l'utilisateur authentifié
