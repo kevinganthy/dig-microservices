@@ -1,0 +1,58 @@
+services:
+  api-gateway:
+    build:
+      context: ./api-gateway
+    volumes:
+      - ./api-gateway:/app
+      - /app/node_modules
+    ports:
+      - 3000:3000
+    depends_on:
+      product:
+        condition: service_started
+      cart:
+        condition: service_started
+      redis:
+        condition: service_started
+      db-gateway:
+        condition: service_healthy
+    networks:
+      - network-services
+      - network-gateway
+      - network-redis
+
+  product:
+    build:
+      context: ./product
+    volumes:
+      - ./product:/app
+      - /app/node_modules
+    ports:
+      - 3001:3000
+    depends_on:
+      db-product:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - network-services
+      - network-product
+      - network-redis
+
+  cart:
+    build:
+      context: ./cart
+    volumes:
+      - ./cart:/app
+      - /app/node_modules
+    ports:
+      - 3002:3000
+    depends_on:
+      db-cart:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - network-services
+      - network-cart
+      - network-redis

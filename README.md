@@ -7,9 +7,3 @@ L'architecture logicielle microservices est complexe. Dans un premier temps, ell
 :warning: L'architecture simplifié n'a qu'un but pédagogique et n'a aucun intérêt dans le monde réel.
 
 Let's go ! => [Introduction](./docs/introduction.md)
-
----
-
-**Idées** :
-
-* Faire plusieurs compose pour réduire la taille du principal

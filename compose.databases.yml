@@ -1,0 +1,55 @@
+services:
+  db-gateway:
+    image: postgres:latest
+    restart: always
+    env_file:
+      - ./api-gateway/.env
+    volumes:
+      - db-gateway:/var/lib/postgresql/data
+      - ./db/gateway.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - network-gateway
+      - network-redis
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    
+  db-product:
+    image: postgres:latest
+    restart: always
+    env_file:
+      - ./product/.env
+    volumes:
+      - db-gateway:/var/lib/postgresql/data
+      - ./db/products.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - network-product
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  db-cart:
+    image: mongo:latest
+    restart: always
+    command: mongod --quiet --logpath /dev/null  
+    env_file:
+      - ./cart/.env
+    volumes: 
+      - db-cart:/data/db
+      - ./cart.js:/docker-entrypoint-initdb.d/init.js:ro
+    networks:
+      - network-cart
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.runCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  redis:
+    image: redis:latest
+    networks:
+      - network-redis
