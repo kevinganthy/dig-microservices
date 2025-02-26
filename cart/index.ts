@@ -4,9 +4,7 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 const app = express();
 const PORT = 3000;
-
 app.use(bodyParser.json());
-mongoose.connect('mongodb://db-cart:27017/cart');
 
 
 
@@ -29,7 +27,6 @@ const cartSchema: Schema = new mongoose.Schema({
     },
   ],
 });
-
 const Cart = mongoose.model<ICart>('Cart', cartSchema);
 
 
@@ -91,6 +88,11 @@ app.put('/carts/clients/:id/product', async (req: Request, res: Response): Promi
 
 
 
-app.listen(PORT, (): void => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
+app.listen(PORT, async (): Promise<void> => {
+  try {
+    await mongoose.connect('mongodb://db-cart:27017/cart');
+    console.log(`🚀 Server running at http://localhost:${PORT}`);
+  } catch (error) {
+    console.error("Unable to connect to the database:", error);
+  }
 });
