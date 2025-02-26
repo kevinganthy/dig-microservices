@@ -47,7 +47,7 @@ const Product = sequelize.define(
 
 app.use(express.json());
 
-app.get("/products", async (req, res) => {
+app.get("/", async (req, res) => {
   try {
     const products = await Product.findAll();
     res.json(products);
@@ -56,7 +56,7 @@ app.get("/products", async (req, res) => {
   }
 });
 
-app.post("/products", async (req, res) => {
+app.post("/", async (req, res) => {
   try {
     const product = await Product.create(req.body);
     res.status(201).json(product);
@@ -65,7 +65,7 @@ app.post("/products", async (req, res) => {
   }
 });
 
-app.put("/products/:id", async (req, res) => {
+app.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     await Product.update(req.body, { where: { id } });

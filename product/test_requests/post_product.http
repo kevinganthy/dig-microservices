@@ -1,4 +1,4 @@
-POST http://localhost:3001/products
+POST http://localhost:3001
 content-type: application/json
 
 {

@@ -6,8 +6,6 @@ const app = express();
 const PORT = 3000;
 app.use(bodyParser.json());
 
-
-
 interface IProduct {
   product_id: Number;
   quantity: number;
@@ -31,14 +29,10 @@ const Cart = mongoose.model<ICart>('Cart', cartSchema);
 
 
 
-app.get('/', (_req: Request, res: Response): void => {
-  res.send('Hello from Cart Service');
-});
-
-app.get('/carts/clients/:id', async (req: Request, res: Response): Promise<void> => {
-  const clientId = req.params.id;
+app.get('/clients/:client_id', async (req: Request, res: Response): Promise<void> => {
+  const clientId = Number(req.params.client_id);
   try {
-    const cart = await Cart.findOne({ client_id: Number(clientId) });
+    const cart = await Cart.findOne({ client_id: clientId });
     if (cart) {
       res.json(cart);
     } else {
@@ -49,21 +43,22 @@ app.get('/carts/clients/:id', async (req: Request, res: Response): Promise<void>
   }
 });
 
-app.put('/carts/clients/:id/product', async (req: Request, res: Response): Promise<void> => {
-  const clientId = req.params.id;
-  const { quantity, product_id }: { quantity: number, product_id: number } = req.body;
+app.put('/clients/:client_id/products/:product_id', async (req: Request, res: Response): Promise<void> => {
+  const clientId = Number(req.params.client_id);
+  const productId = Number(req.params.product_id);
+  const { quantity }: { quantity: number } = req.body;
 
   try {
     // Look for a cart with the client_id
-    let cart = await Cart.findOne({ client_id: Number(clientId) });
+    let cart = await Cart.findOne({ client_id: clientId });
 
     // Create a new cart if it doesn't exist
     if (!cart) {
-      cart = new Cart({ client_id: Number(clientId), content: [] });
+      cart = new Cart({ client_id: clientId, content: [] });
     }
 
     // Check if the product is already in the cart
-    const productIndex = cart.content.findIndex((item: IProduct) => item.product_id === Number(product_id));
+    const productIndex = cart.content.findIndex((item: IProduct) => item.product_id === productId);
     
     if (productIndex > -1) {
       // Add the quantity to the existing product
@@ -75,7 +70,7 @@ app.put('/carts/clients/:id/product', async (req: Request, res: Response): Promi
       }
     } else {
       // Add the product to the cart
-      cart.content.push({ product_id, quantity });
+      cart.content.push({ product_id: productId, quantity });
     }
 
     // Save and return the cart
