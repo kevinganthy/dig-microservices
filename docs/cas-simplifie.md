@@ -16,9 +16,7 @@ L'architecture appliquée pendant ce cours sera simplifiée, tout en gardant la 
 
 ## Exercice
 
-Le développement de l'application en microservices se déroulera en plusieurs étapes pour simplifier l'approche.
-
-Les services seront simplifiés et ne comporteront que les endpoints principaux.
+Le développement de l'application en microservices se déroulera en plusieurs étapes pour simplifier l'approche. Les services seront simplifiés et ne comporteront que les endpoints principaux.
 
 ### Étape 1 : Infrastructure
 

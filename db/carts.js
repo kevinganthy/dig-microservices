@@ -12,5 +12,14 @@ db.carts.insert([
         quantity: 2
       }
     ]
+  },
+  {
+    client_id: 2,
+    content: [
+      {
+        product_id: 1,
+        quantity: 1
+      }
+    ]
   }
 ]);

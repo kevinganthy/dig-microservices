@@ -2,6 +2,18 @@ include:
   - ./compose.services.yml
   - ./compose.databases.yml
 
+services:
+  adminer:
+      image: adminer
+      ports:
+        - 8080:8080
+      networks:
+        - network-gateway
+        - network-product
+        - network-cart
+      depends_on:
+        - db-gateway
+        
 volumes:
   db-gateway:
   db-product:

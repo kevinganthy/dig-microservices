@@ -31,6 +31,14 @@ const Cart = mongoose.model<ICart>('Cart', cartSchema);
 
 app.get('/clients/:client_id', async (req: Request, res: Response): Promise<void> => {
   const clientId = Number(req.params.client_id);
+  
+  // Uniquement si le panier appartient à l'utilisateur
+  const userId = Number(req.headers["x-user-id"]);
+  if ( userId && userId !== clientId ) {
+    res.status(403).send('Forbidden');
+    return;
+  }
+
   try {
     const cart = await Cart.findOne({ client_id: clientId });
     if (cart) {
@@ -47,6 +55,13 @@ app.put('/clients/:client_id/products/:product_id', async (req: Request, res: Re
   const clientId = Number(req.params.client_id);
   const productId = Number(req.params.product_id);
   const { quantity }: { quantity: number } = req.body;
+
+  // Uniquement si le panier appartient à l'utilisateur
+  const userId = Number(req.headers["x-user-id"]);
+  if ( userId && userId !== clientId ) {
+    res.status(403).send('Forbidden');
+    return;
+  }
 
   try {
     // Look for a cart with the client_id
