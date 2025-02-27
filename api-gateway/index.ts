@@ -284,20 +284,18 @@ const isAllowed = async (roleId: number, route: string, method: string) => {
 
 
 app.use('/products', async (req: Request, res: Response, next: NextFunction) => {
-
-  // Vérification RBAC
-  const ok = await isAllowed(req.currentUser!.role, req.originalUrl, req.method);
-  if (!ok) {
+  const status = await isAllowed(req.currentUser!.role, req.originalUrl, req.method);
+  if (status === "no") {
     res.status(403).send('Accès non autorisé');
     return;
-  }
+  } 
+
   next();
 }, productProxy);
 
 const cartsProxy = createProxyMiddleware({
   target: SERVICES.CART,
   on: {
-    // Filtrage des requêtes user pour les clients
     proxyReq: (proxyReq: any, req: Request, res: Response) => {
       // Si le status est en "self", la requête sur le panier doit etre restreinte à l'utilisateur connecté
       if ( res.locals.status === "self" ) {
@@ -309,14 +307,12 @@ const cartsProxy = createProxyMiddleware({
 
 app.use('/carts', async (req: Request, res: Response, next: NextFunction) => {
   const status = await isAllowed(req.currentUser!.role, req.originalUrl, req.method);
-  
   if (status === "no") {
     res.status(403).send('Accès non autorisé');
     return;
   } 
   
   res.locals.status = status;
-
   next();
 }, cartsProxy);
 

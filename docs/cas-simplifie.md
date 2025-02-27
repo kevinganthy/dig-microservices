@@ -76,13 +76,15 @@ Implémenter les routes sans se préoccuper de l'authentification pour le moment
 - `GET` `/carts/clients/:id` : redirection vers service `cart`
 - `PUT` `/carts/clients/:id/products/:product_id` : redirection vers service `cart`
 
-### Étape 5 : Authentification et RBAC
+### Étape 5 : Authentification
 
 Ajouter l'authentification à l'API Gateway.
 
-- Implémenter la route `/auth` qui authentifie un utilisateur et renvoie un token JWT.
-- Ajouter le middleware qui vérifie le token JWT et ajoute les informations de l'utilisateur dans `req.currentUser`.
+- Implémenter la route `/auth` qui authentifie un utilisateur et renvoie un token JWT stockant le `userId` et le `roleId`.
+- Créer un middleware qui vérifie le token JWT et ajoute les informations dans `req.currentUser`.
 - Appliquer le middleware pour toutes les routes sauf `/auth`.
+
+### Étape 6 : RBAC
 
 Ajouter les vérifications de rôles pour les routes redirigées de l'API Gateway.
 
@@ -98,7 +100,50 @@ Ajouter les vérifications de rôles pour les routes redirigées de l'API Gatewa
 
 ✅ autorisé 👤 autorisé sur les données appartenant à l'utilisateur authentifié
 
-### Étape 6 : Redis
+Une table `matix` stocker les règles d'accès suivant ce schéma :
+
+```sql
+CREATE TABLE matrix (
+    id SERIAL PRIMARY KEY,
+    role_id INT NOT NULL,
+    route VARCHAR(255) NOT NULL,
+    r VARCHAR(255) NOT NULL,
+    w VARCHAR(255) NOT NULL,
+    u VARCHAR(255) NOT NULL,
+    d VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO 
+    matrix (role_id, route, r, w, u, d) 
+VALUES 
+    (1, '^/products$', 'yes', 'yes', 'yes', 'no'),
+    (1, '^/carts/clients/\d+$', 'yes', 'no', 'no', 'no'),
+    (1, '^/carts/clients/\d+/products/\d+$', 'yes', 'yes', 'yes', 'yes'),
+    (2, '^/carts/clients/\d+$', 'self', 'no', 'no', 'no'),
+    (2, '^/carts/clients/\d+/products/\d+$', 'no', 'no', 'self', 'no');
+```
+
+Une fonction `isAllowed` sera en charge de récupérer les règles dans la table `matrix` et de déterminer, en fonction de la route et du rôle, si l'utilisateur a le droit d'accéder à la ressource. Elle retournera `yes`, `no` ou `self`.
+
+`self` sera utilisé pour les routes panier où l'utilisateur doit être le propriétaire pour y accéder. Dans ce cas, il faudra faire transiter le `userId` dans le header de la requête faite par le proxy :
+
+```js
+const cartsProxy = createProxyMiddleware({
+  target: SERVICES.CART,
+  on: {
+    proxyReq: (proxyReq: any, req: Request, res: Response) => {
+      if ( res.locals.status === "self" ) {
+        proxyReq.setHeader("x-user-id", req.currentUser!.userId.toString());
+      }
+    }
+  }
+});
+```
+
+Dernière étape, dans le service `cart`, si un `userId` est présent dans le `header`, vérifier que l'utilisateur est bien le propriétaire du panier avant d'exécuter l'action.
+
+### Étape 7 : Redis
 
 #### Mise en cache
 
@@ -119,3 +164,7 @@ Déclencher la publication **uniquement** si le prix est modifié. Utiliser la c
 #### Abonnement
 
 Ajouter un système d'abonnement via Redis lors de la modification d'un prix de produit pour mettre à jour les paniers au niveau du service `cart`.
+
+### Bonus
+
+Mettre en place un test end to end sur l'api gateway.
