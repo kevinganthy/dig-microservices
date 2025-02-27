@@ -86,7 +86,7 @@ Ajouter l'authentification à l'API Gateway.
 
 ### Étape 6 : RBAC
 
-Ajouter les vérifications de rôles pour les routes redirigées de l'API Gateway.
+L'API Gateway est en charge de gérer le RBAC. Les règles d'accès sont les suivantes :
 
 | Endpoint | Role | GET | POST | PUT | DELETE |
 |----------|------|-----|------|-----|--------|
@@ -99,6 +99,8 @@ Ajouter les vérifications de rôles pour les routes redirigées de l'API Gatewa
 |  | user | | | 👤 | |
 
 ✅ autorisé 👤 autorisé sur les données appartenant à l'utilisateur authentifié
+
+#### Stocker les règles
 
 Une table `matix` stocker les règles d'accès suivant ce schéma :
 
@@ -124,9 +126,15 @@ VALUES
     (2, '^/carts/clients/\d+/products/\d+$', 'no', 'no', 'self', 'no');
 ```
 
-Une fonction `isAllowed` sera en charge de récupérer les règles dans la table `matrix` et de déterminer, en fonction de la route et du rôle, si l'utilisateur a le droit d'accéder à la ressource. Elle retournera `yes`, `no` ou `self`.
+#### Déterminer les droits
 
-`self` sera utilisé pour les routes panier où l'utilisateur doit être le propriétaire pour y accéder. Dans ce cas, il faudra faire transiter le `userId` dans le header de la requête faite par le proxy :
+Une fonction `isAllowed` sera en charge de récupérer les règles dans la table `matrix` et de déterminer, en fonction de la route et du rôle, si l'utilisateur a le droit d'accéder à la ressource. En base de données, les routes sont des expressions régulière. La fonction retournera `yes`, `no` ou `self`.
+
+#### Propager les informations aux services
+
+`self` sera utilisé pour les routes panier, où l'utilisateur doit être le propriétaire pour y accéder. Le service `cart` sera en charge de déterminer si l'utilisateur est bien le propriétaire du panier.
+
+Dans ce cas, il faudra faire transiter le `userId` dans le header de la requête faite par le proxy :
 
 ```js
 const cartsProxy = createProxyMiddleware({
@@ -147,12 +155,12 @@ Dernière étape, dans le service `cart`, si un `userId` est présent dans le `h
 
 #### Mise en cache
 
-Ajouter un cache Redis pour stocker les roles et leurs permissions au niveau de l'API Gateway. Suivre le process suivant :
+Ajouter un cache Redis pour stocker la matrice RBAC au niveau de l'API Gateway. Suivre le process suivant :
 
 - Lire le cache
 - Si les données **ne sont pas** présentes
-  - Extraire les rôles de la base de données
-  - Stocker les rôles dans le cache
+  - Extraire les données de la table `matrix`
+  - Stocker dans le cache
 - Utiliser les données pour le RBAC
 
 #### Publication de modification
