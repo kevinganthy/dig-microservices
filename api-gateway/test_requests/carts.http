@@ -1,0 +1,47 @@
+@baseUrl = http://localhost:3000
+@user = user
+
+### Authentification
+
+# @name auth
+POST {{baseUrl}}/auth
+content-type: application/json
+
+{
+    "email": "{{user}}@oclock.io",
+    "password": "{{user}}"
+}
+
+### Save the token in the environment variable
+
+@token={{auth.response.body.token}}
+
+### GET cart details for client id 1 (admin)
+
+GET {{baseUrl}}/carts/clients/1
+Authorization: Bearer {{token}}
+
+### GET cart details for client id 2 (user)
+
+GET {{baseUrl}}/carts/clients/2
+Authorization: Bearer {{token}}
+
+### PUT a new quantity product for client id 1 (admin)
+
+PUT {{baseUrl}}/carts/clients/1/products/1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "quantity": 7
+}
+
+### PUT a new quantity product for client id 2 (admin)
+
+PUT {{baseUrl}}/carts/clients/2/products/1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "quantity": 7
+}
