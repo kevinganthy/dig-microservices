@@ -4,8 +4,10 @@ import { User } from "../models";
 import { CONFIG } from "../config";
 import { Scrypt } from "../utils/Scrypt";
 import { UserPayload } from "../types/auth";
+import bodyParser from "body-parser";
 
 const router = Router();
+router.use(bodyParser.json());
 
 router.post("/", async (req: Request, res: Response) => {
   const { email, password } = req.body;

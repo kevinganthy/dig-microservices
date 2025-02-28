@@ -14,13 +14,13 @@ import { cartsProxy } from './proxies/cart';
 initDatabase();
 
 const app = express();
-app.use(bodyParser.json());
 
 // Public routes
 app.use("/auth", authRoutes);
 
 // Private routes
 app.use(validateJWT);
+app.use(bodyParser.text({ type: 'text/plain' }));
 app.use('/products', productMiddleware, productProxy);
 app.use('/carts', cartMiddleware, cartsProxy);
 

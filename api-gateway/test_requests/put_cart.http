@@ -1,6 +1,6 @@
 PUT http://localhost:3000/carts/clients/1/products/1
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOjEsImlhdCI6MTc0MDY1MDk2NX0.5jG9I0eTZPC_2dkomy4GHni3OvcPga-JyUyKK8cGtbI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOjEsImlhdCI6MTc0MDc0MDc1N30.O46U0Qr5BCfzDoK1eaYotj1zpvlYf0EezJXs49iucRs
 
 {
     "quantity": 7
