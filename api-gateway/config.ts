@@ -12,8 +12,9 @@ export const CONFIG = {
     HOST: process.env.HOST_DB || "",
     DIALECT: "postgres",
   },
+  REDIS_HOST: process.env.REDIS_HOST || "",
   SERVICES: {
     PRODUCT: process.env.HOST_PRODUCT,
     CART: process.env.HOST_CART,
-  }
+  },
 };
