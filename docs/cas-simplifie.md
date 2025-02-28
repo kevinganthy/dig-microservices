@@ -102,7 +102,7 @@ L'API Gateway est en charge de gérer le RBAC. Les règles d'accès sont les sui
 
 #### Stocker les règles
 
-Une table `matix` stocker les règles d'accès suivant ce schéma :
+Une table `matrix` stockera les règles d'accès comme ceci :
 
 ```sql
 CREATE TABLE matrix (
