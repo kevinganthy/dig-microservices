@@ -6,7 +6,7 @@ services:
       - ./api-gateway/.env
     volumes:
       - db-gateway:/var/lib/postgresql/data
-      - ./db/gateway.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./api-gateway/gateway.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
       - network-gateway
       - network-redis
@@ -23,7 +23,7 @@ services:
       - ./product/.env
     volumes:
       - db-product:/var/lib/postgresql/data
-      - ./db/products.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./product/products.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
       - network-product
     healthcheck:
@@ -40,7 +40,7 @@ services:
       - ./cart/.env
     volumes:
       - db-cart:/data/db
-      - ./db/carts.js:/docker-entrypoint-initdb.d/init.js:ro
+      - ./cart/carts.js:/docker-entrypoint-initdb.d/init.js:ro
     networks:
       - network-cart
     healthcheck:
