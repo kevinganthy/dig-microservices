@@ -1,2 +1,2 @@
-GET http://localhost:3000/carts/clients/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsInJvbGUiOjIsImlhdCI6MTc0MDY1NTE2OX0.tY_OML5joICsTsytYIV_rV3-xwU_13JzWaNgWPdGbq0
+GET http://localhost:3000/carts/clients/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOjEsImlhdCI6MTc0MDcyOTI4N30.x6dEgpc5y3zru-EBfRP9a6CDTiqQTRLkIuxHCSoDfPg
