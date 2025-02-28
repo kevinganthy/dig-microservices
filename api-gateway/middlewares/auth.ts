@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { CONFIG } from "../config";
-import { UserPayload } from "../@types/auth";
+import { UserPayload } from "../types/auth";
 
 export const validateJWT = (req: Request, res: Response, next: NextFunction): void => {
   try {

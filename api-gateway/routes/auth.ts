@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { User } from "../models";
 import { CONFIG } from "../config";
 import { Scrypt } from "../utils/Scrypt";
-import { UserPayload } from "../@types/auth";
+import { UserPayload } from "../types/auth";
 
 const router = Router();
 
