@@ -38,9 +38,9 @@ VALUES
     ('user', 'user', '17ce4330029bd1ffe242c27c90489c83e7fcceb96b9e53a8eaba45a1e5d5b7918e3bc9e8d7e3107aaf5ce65c8bd9e5bbdbfdbe1690c50be5d4ee7556963c1020.6de33b7a73eae765499d2dd8fdb93261', 'user@oclock.io', 2);
 
 INSERT INTO 
-    matrix (role_id, route, r, w, u, d) 
+    matrix (role_id, route, r, w, u, d)
 VALUES 
-    (1, '^/products$', 'yes', 'yes', 'yes', 'no'),
+    (1, '^/products(/\d+)?$', 'yes', 'yes', 'yes', 'no'),
     (1, '^/carts/clients/\d+$', 'yes', 'no', 'no', 'no'),
     (1, '^/carts/clients/\d+/products/\d+$', 'yes', 'yes', 'yes', 'yes'),
     (2, '^/carts/clients/\d+$', 'self', 'no', 'no', 'no'),

@@ -1,6 +1,6 @@
 PUT http://localhost:3000/products/1
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOjEsImlhdCI6MTc0MDc0MDc1N30.O46U0Qr5BCfzDoK1eaYotj1zpvlYf0EezJXs49iucRs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOjEsImlhdCI6MTc0MDc0NTIxM30.2yE6e1BFNwTVDa8UkmnCxH-bos0oUqepQFS9Z0m6hCg
 
 {
     "name": "Product updated",

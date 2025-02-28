@@ -1,15 +1,12 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-
 import { initDatabase } from "./models";
-
 import authRoutes from "./routes/auth";
 import { validateJWT } from './middlewares/auth';
 import { productProxy } from './proxies/product';
 import { productMiddleware } from './middlewares/product';
 import { cartMiddleware } from './middlewares/cart';
 import { cartsProxy } from './proxies/cart';
-
 
 initDatabase();
 
