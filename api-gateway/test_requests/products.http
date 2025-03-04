@@ -42,7 +42,7 @@ Authorization: Bearer {{token}}
 
 {
     "name": "Product updated",
-    "price": 20.5,
+    "price": 1,
     "description": "Product description updated",
     "in_stock": false
 }

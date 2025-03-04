@@ -1,5 +1,5 @@
 @baseUrl = http://localhost:3000
-@user = user
+@user = admin
 
 ### Authentification
 

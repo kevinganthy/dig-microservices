@@ -167,7 +167,7 @@ Ajouter un cache Redis pour stocker la matrice RBAC au niveau de l'API Gateway. 
 
 Ajouter un système de publication via Redis lors de la modification d'un prix de produit au niveau du service `product`.
 
-Déclencher la publication **uniquement** si le prix est modifié. Utiliser la clé `product:price:updated` pour la publication.
+Déclencher la publication **uniquement** que le produit est modifié. Utiliser la clé `product:updated` pour la publication.
 
 #### Abonnement
 

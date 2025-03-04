@@ -1,10 +1,12 @@
 import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+dotenv.config();
+
 import { validateProductInsertion } from './middlewares/product';
 import { Cart, IProduct } from './models/cart';
+import redisClient from "./redis";
 
-dotenv.config();
 
 const app = express();
 app.use(express.json());
@@ -38,7 +40,7 @@ app.put('/clients/:client_id/products/:product_id',
   async (req: Request, res: Response) => {
     const clientId = Number(req.params.client_id);
     const productId = Number(req.params.product_id);
-    const { quantity }: { quantity: number } = req.body;
+    const { quantity, price }: { quantity: number, price: number } = req.body;
 
     // Uniquement si le panier appartient à l'utilisateur (sauf pour admin)
     const userId = Number(req.headers["x-user-id"]);
@@ -69,7 +71,7 @@ app.put('/clients/:client_id/products/:product_id',
         }
       } else {
         // Add the product to the cart
-        cart.content.push({ product_id: productId, quantity });
+        cart.content.push({ product_id: productId, quantity, price });
       }
 
       // Save and return the cart
@@ -86,6 +88,22 @@ app.put('/clients/:client_id/products/:product_id',
 app.listen(process.env.PORT || 3000, async (): Promise<void> => {
   try {
     await mongoose.connect(process.env.MONGO_CONNECTION_STRING as string);
+
+    // On écoute la clé `product:updated` stockée dans Redis 
+    // et on met à jour les prix lors d'une modif dans le service Product
+    await redisClient.subscribe('product:updated', async (item: any) => {
+      const updatedProduct = JSON.parse(item);
+      const carts = await Cart.find({ "content.product_id": updatedProduct.id });
+      for (const cart of carts) {
+        const productIndex = cart.content.findIndex((item: IProduct) => item.product_id === updatedProduct.id);
+        if (productIndex > -1) {
+          cart.content[productIndex].price = updatedProduct.price;
+          await cart.save();
+        }
+      }
+      console.log('Updated product price in carts:', updatedProduct);
+    });
+
     console.log(`🚀 Server running at http://localhost:${process.env.PORT || 3000}`);
   } catch (error) {
     console.error("Unable to connect to the database:", error);

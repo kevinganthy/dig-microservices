@@ -4,6 +4,7 @@ import mongoose, { Document, Schema } from 'mongoose';
 export interface IProduct {
   product_id: Number;
   quantity: number;
+  price: Number;
 }
 
 interface ICart extends Document {
@@ -17,6 +18,7 @@ const cartSchema: Schema = new mongoose.Schema({
     {
       product_id: { type: Number, required: true },
       quantity: { type: Number, required: true },
+      price: { type: Number, required: true },
     },
   ],
 });

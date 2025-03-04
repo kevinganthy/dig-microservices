@@ -1,6 +1,7 @@
 import express from "express";
 import { validateProductCreation, validateProductUpdate } from "./models/product.js";
 import { Product, initDatabase } from "./models/index.js";
+import redisClient from "./redis.js";
 
 initDatabase();
 
@@ -26,22 +27,26 @@ app.post("/", validateProductCreation, async (req, res) => {
   }
 });
 
-app.put("/:id", validateProductUpdate, async (req, res) => {
-  try {
-    const { id } = req.params;
-    await Product.update(req.body, { where: { id } });
-    const updatedProduct = await Product.findByPk(id);
-    res.json(updatedProduct);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+app.put("/:id", 
+  validateProductUpdate, 
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      await Product.update(req.body, { where: { id } });
+      const updatedProduct = await Product.findByPk(id);
+      
+      res.locals.product = updatedProduct;
+      next();
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+  async (_req, res) => {
+    await redisClient.publish("product:updated", JSON.stringify(res.locals.product));
+    res.json(res.locals.product);
   }
-});
+);
 
 app.listen(process.env.PORT || 3000, async () => {
-  try {
-    // await sequelize.sync();
-    console.log(`🚀 Server running at http://localhost:${process.env.PORT || 3000}`);
-  } catch (error) {
-    console.error("Unable to connect to the database:", error);
-  }
+  console.log(`🚀 Server running at http://localhost:${process.env.PORT || 3000}`);
 });
