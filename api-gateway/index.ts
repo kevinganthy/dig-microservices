@@ -1,5 +1,4 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 import { initDatabase } from "./models";
 import authRoutes from "./routes/auth";
 import { validateJWT } from './middlewares/auth';
@@ -17,7 +16,6 @@ app.use("/auth", authRoutes);
 
 // Private routes
 app.use(validateJWT);
-app.use(bodyParser.text({ type: 'text/plain' }));
 app.use('/products', productMiddleware, productProxy);
 app.use('/carts', cartMiddleware, cartsProxy);
 

@@ -1,49 +1,10 @@
-const express = require("express");
-const { Sequelize, DataTypes } = require("sequelize");
-const dotenv = require("dotenv");
+import express from "express";
+import { validateProductCreation, validateProductUpdate } from "./models/product.js";
+import { Product, initDatabase } from "./models/index.js";
 
-dotenv.config();
+initDatabase();
 
 const app = express();
-const PORT = 3000;
-
-const sequelize = new Sequelize(
-  process.env.POSTGRES_DB,
-  process.env.POSTGRES_USER,
-  process.env.POSTGRES_PASSWORD,
-  {
-    host: "db-product",
-    dialect: "postgres",
-  }
-);
-
-const Product = sequelize.define(
-  "Product",
-  {
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    price: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
-    },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    in_stock: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-    },
-  },
-  {
-    timestamps: true,
-    createdAt: "created_at",
-    updatedAt: false,
-    tableName: "products",
-  }
-);
 
 app.use(express.json());
 
@@ -56,7 +17,7 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.post("/", async (req, res) => {
+app.post("/", validateProductCreation, async (req, res) => {
   try {
     const product = await Product.create(req.body);
     res.status(201).json(product);
@@ -65,7 +26,7 @@ app.post("/", async (req, res) => {
   }
 });
 
-app.put("/:id", async (req, res) => {
+app.put("/:id", validateProductUpdate, async (req, res) => {
   try {
     const { id } = req.params;
     await Product.update(req.body, { where: { id } });
@@ -76,10 +37,10 @@ app.put("/:id", async (req, res) => {
   }
 });
 
-app.listen(PORT, async () => {
+app.listen(process.env.PORT || 3000, async () => {
   try {
-    await sequelize.sync();
-    console.log(`🚀 Server running at http://localhost:${PORT}`);
+    // await sequelize.sync();
+    console.log(`🚀 Server running at http://localhost:${process.env.PORT || 3000}`);
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   }

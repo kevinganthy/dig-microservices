@@ -1,4 +1,7 @@
 import { DataTypes, Model, Optional, Sequelize } from "sequelize";
+import Joi from "joi"
+import { Request, Response, NextFunction } from "express";
+
 
 interface UserAttributes {
   id: number;
@@ -65,3 +68,21 @@ export const initUserModel = (sequelize: Sequelize) => {
     }
   );
 };
+
+export function validateLogin(req: Request, res: Response, next: NextFunction) {
+  const loginSchema = Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().required()
+  });
+
+  const validation = loginSchema.validate(req.body);
+
+  if (validation.error) {
+    res.status(400).send(validation.error);
+    return;
+  }
+
+  next()
+}
+
+

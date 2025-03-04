@@ -43,5 +43,5 @@ content-type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "quantity": 7
+    "quantity": "4"
 }

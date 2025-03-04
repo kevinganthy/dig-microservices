@@ -27,8 +27,6 @@ services:
     volumes:
       - ./product:/app
       - /app/node_modules
-    ports:
-      - 3001:3000
     depends_on:
       db-product:
         condition: service_healthy
@@ -45,8 +43,6 @@ services:
     volumes:
       - ./cart:/app
       - /app/node_modules
-    ports:
-      - 3002:3000
     depends_on:
       db-cart:
         condition: service_healthy

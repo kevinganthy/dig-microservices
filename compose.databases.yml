@@ -40,7 +40,7 @@ services:
       - ./cart/.env
     volumes:
       - db-cart:/data/db
-      - ./cart/carts.js:/docker-entrypoint-initdb.d/init.js:ro
+      - ./cart/cart_seeding.js:/docker-entrypoint-initdb.d/init.js:ro
     networks:
       - network-cart
     healthcheck:
