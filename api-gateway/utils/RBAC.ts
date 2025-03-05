@@ -1,6 +1,6 @@
 import { Matrix } from "../models/matrix";
 import redisClient from "../redis";
-import { MatrixService } from "../services/MatixService";
+import { MatrixService } from "../services/MatrixService";
 
 const matrixService = new MatrixService();
 
