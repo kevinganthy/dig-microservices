@@ -1,6 +1,6 @@
 # Proposition de trame
 
-Basée sur le code présent dans ce repo. Le thème de l'application peut être modifiée sans problème.
+Basée sur le code présent dans ce repo. Le thème de l'application peut être modifié sans problème.
 
 ## Jour 1 : Introduction
 
@@ -16,7 +16,7 @@ Basée sur le code présent dans ce repo. Le thème de l'application peut être 
 
 ## Jour 2 : Produit
 
-**Objectifs** : Réaliser un premier service métier et comprendre le SRP d'un service et l'isolation fournit par docker.
+**Objectifs** : Réaliser un premier service métier, comprendre le SRP d'un service et l'isolation fournit par docker.
 
 * Correction très détaillée du compose et révisions sur les notions de volumes, networks, healthchecks et dépendances.
 * Remise en jambe sur les bases de NodeJS et Express sans Typescript.
@@ -37,7 +37,7 @@ Basée sur le code présent dans ce repo. Le thème de l'application peut être 
 * Introduction à Typescript et ses avantages. Découverte des types simples et de la configuration d'un projet node avec Typescript.
 * (Re?)Découverte de Mongoose pour se connecter à MongoDB.
 * Mise en avant des avantages des microservices :
-  * La base de données est adaptée au service (données préparé, performance, indépendance du service produit)
+  * La base de données est adaptée au service (données préparées, performance, indépendance du service produit)
   * Stack différente de produit, aucun impact dans le projet global
 
 **Challenge** : Implémenter les routes du service panier (`GET /clients/:id`, `PUT /clients/:id/products/:product_id`)
@@ -49,7 +49,7 @@ Basée sur le code présent dans ce repo. Le thème de l'application peut être 
 **Objectifs** : Comprendre le rôle de l'API Gateway et réaliser un point d'entrée pour les services.
 
 * Correction du service cart.
-* Découverte des proxy pour rediriger les requêtes vers les services appropriés.
+* Découverte des proxies pour rediriger les requêtes vers les services appropriés.
 * Utilisation plus avancée de Typescript avec l'implémentation des proxies.
 * Suppression de l'exposition des ports des services produits et panier, toutes les requêtes client passeront par l'API Gateway.
 
@@ -63,7 +63,7 @@ Journée asynchrone.
 
 **Objectifs** : Se remémorer l'authentification JWT et découvrir Prisma.
 
-* Correction détaillé de l'API Gateway.
+* Correction détaillée de l'API Gateway.
 * Introduction à Prisma et ses avantages par rapport à Sequelize, notamment à cause de TS.
   * :warning: Impact sur le Dockerfile
 * Mise en place d'une démo de l'ORM pour lire des données.
@@ -85,7 +85,7 @@ Journée asynchrone.
 * Expliquer comment transférer des informations aux autres services via les headers dans les proxies (userid pour filtrage du panier).
 * Même rappel que pour l'auth, l'API Gateway gérera les permissions pour simplifier.
 
-**Challenge** : Implémenter un middleware pour les permissions dans l'API Gateway. Gérer l'authorisation de lecture du panier en fonction du rôle et du userid présent dans le header dans le service panier.
+**Challenge** : Implémenter un middleware pour les permissions dans l'API Gateway. Gérer l'autorisation de lecture du panier en fonction du rôle et du userid présent dans le header dans le service panier.
 
 ## Jour 8 : Mise en cache
 
@@ -107,7 +107,7 @@ Journée asynchrone.
 * Introduction à la communication asynchrone
   * Avantages et inconvénients, cas d'usages...
   * Différence entre point à point et one-to-many
-  * Citer les solution adaptées (RabbitMQ, Kafka) mais préciser qu'on utilisera Redis dans notre cas, bien qu'il ne soit pas aussi efficace.
+  * Citer les solutions adaptées (RabbitMQ, Kafka) mais préciser qu'on utilisera Redis dans notre cas, bien qu'il ne soit pas aussi efficace.
   * Démonstration de publish et subscribe avec Redis.
 * Retour sur le schéma d'architecture complet pour finaliser la saison.
 
