@@ -4,7 +4,7 @@ import { initUserModel, User } from "./user";
 import { initRoleModel, Role } from "./role";
 import { initMatrixModel, Matrix } from "./matrix";
 
-export const sequelize = new Sequelize(
+const sequelize = new Sequelize(
   CONFIG.DATABASE.NAME,
   CONFIG.DATABASE.USER,
   CONFIG.DATABASE.PASSWORD,
@@ -31,5 +31,3 @@ export const initDatabase = async () => {
       console.error("❌ Unable to connect to the database:", error);
     }
 };
-
-export { User, Role, Matrix };

@@ -1,5 +1,8 @@
 import { Matrix } from "../models/matrix";
 import redisClient from "../redis";
+import { MatrixService } from "../services/MatixService";
+
+const matrixService = new MatrixService();
 
 export const isAllowed = async (
   roleId: number,
@@ -16,7 +19,7 @@ export const isAllowed = async (
     if (cachedRules) {
       rules = JSON.parse(cachedRules);
     } else {
-      rules = await Matrix.findAll();
+      rules = await matrixService.findAll();
       await redisClient.set(cacheKey, JSON.stringify(rules));
     }
 

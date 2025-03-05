@@ -1,14 +1,14 @@
-import { Request, Response } from "express"
+import { Request, Response } from "express";
 import { UserPayload } from "../types/auth";
 import { Scrypt } from "../utils/Scrypt";
-import { User } from "../models";
+import { IUserService } from "../types/user";
 import { CONFIG } from "../config";
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 
-export default async (req: Request, res: Response) => {
-    const { email, password } = req.body;
+export default (userService: IUserService) => async (req: Request, res: Response) => {
+  const { email, password } = req.body;
 
-  const user = await User.findOne({ where: { email } });
+  const user = await userService.findOneByEmail(email);
   if (!user) {
     res.status(404).send("User not found");
     return;
@@ -27,4 +27,4 @@ export default async (req: Request, res: Response) => {
   const token = jwt.sign(payload, CONFIG.TOKEN_SECRET);
 
   res.send({ token });
-}
+};
