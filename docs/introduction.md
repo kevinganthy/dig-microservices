@@ -40,6 +40,10 @@
 
 > Exemple d'un e-commerce
 
+![Architecture microservices complète](./µservices.drawio.png)
+
+:warning: Sert d'information, ne pas détailler tout pour le momemnt !
+
 ### Services de base
 
 * API Gateway : point d'entrée de l'application, routage des requêtes vers les services appropriés

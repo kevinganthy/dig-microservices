@@ -14,11 +14,9 @@ L'architecture appliquée pendant ce cours sera simplifiée, tout en gardant la 
 - La mise en production ne sera pas vu, mais l'environnement de développement sera Dockerisé
 - La surveillance des services n'est pas abordée
 
-## Exercice
+## Détails
 
-Le développement de l'application en microservices se déroulera en plusieurs étapes pour simplifier l'approche. Les services seront simplifiés et ne comporteront que les endpoints principaux.
-
-### Étape 1 : Infrastructure
+### Infrastructure
 
 Créer une infrastructure avec docker et docker compose représentant le schéma d'architecture simplifié. Utiliser des templates de projets NodeJS temporairement.
 
@@ -45,7 +43,7 @@ Mettre en place le seeding des bases de données avec au moins :
 
 Ajouter les volumes, networks, healthchecks et dépendances nécessaires.
 
-### Étape 2 : Produit
+### Produit
 
 Créer une application NodeJS pour le service produit nommé `product` avec JavaScript, Express et Sequelize.
 
@@ -55,7 +53,7 @@ Implémenter les routes sans gérer l'authentification, qui sera gérée par l'A
 - `POST /` : Crée un produit
 - `PUT /:id` : Modifie un produit
 
-### Étape 3 : Panier
+### Panier
 
 Créer une application NodeJS pour le service panier nommé `cart` avec Typescript, Express et Mongoose.
 
@@ -64,7 +62,7 @@ Implémenter les routes sans gérer l'authentification, qui sera gérée par l'A
 - `GET /clients/:id` : Récupère le panier d'un utilisateur
 - `PUT /clients/:id/products/:product_id` : Ajoute ou modifie un produit dans le panier d'un utilisateur. Crée le panier si besoin. Supprime le produit si quantité finale à 0.
 
-### Étape 4 : API Gateway
+### API Gateway
 
 Créer une application NodeJS pour l'API Gateway nommé `api-gateway` avec Typescript, Express et Sequelize.
 
@@ -76,7 +74,7 @@ Implémenter les routes sans se préoccuper de l'authentification pour le moment
 - `GET` `/carts/clients/:id` : redirection vers service `cart`
 - `PUT` `/carts/clients/:id/products/:product_id` : redirection vers service `cart`
 
-### Étape 5 : Authentification
+### Authentification
 
 Ajouter l'authentification à l'API Gateway.
 
@@ -84,7 +82,7 @@ Ajouter l'authentification à l'API Gateway.
 - Créer un middleware qui vérifie le token JWT et ajoute les informations dans `req.currentUser`.
 - Appliquer le middleware pour toutes les routes sauf `/auth`.
 
-### Étape 6 : RBAC
+### RBAC
 
 L'API Gateway est en charge de gérer le RBAC. Les règles d'accès sont les suivantes :
 
@@ -151,7 +149,7 @@ const cartsProxy = createProxyMiddleware({
 
 Dernière étape, dans le service `cart`, si un `userId` est présent dans le `header`, vérifier que l'utilisateur est bien le propriétaire du panier avant d'exécuter l'action.
 
-### Étape 7 : Redis
+### Redis
 
 #### Mise en cache
 
