@@ -42,7 +42,7 @@ Basée sur le code présent dans ce repo. Le thème de l'application peut être 
 * Découverte des proxies pour rediriger les requêtes vers les services appropriés.
 * Utilisation plus avancée de Typescript avec l'implémentation des proxies.
 * Suppression de l'exposition des ports des services produits et panier, toutes les requêtes client passeront par l'API Gateway.
-* Ouverture au déploiement avec les images docker et une orchestration docker swarm.
+* Ouverture théorique au déploiement avec les images docker et une orchestration docker swarm.
 
 > Un retour sur le cas normal sera fait en fin de saison pour remettre à plat les connaissances et faire les liens entre la pratique vue sur les 2 semaines et la théorie vue le premier jour.
 
@@ -57,7 +57,7 @@ Basée sur le code présent dans ce repo. Le thème de l'application peut être 
   * :warning: Impact sur le Dockerfile
 * Mise en place d'une démo de l'ORM pour lire des données.
 * Utilisation des interfaces avec TS pour créer des services aux modèles afin de respecter le principe d'inversion de dépendance.
-* Rappel sur la façon officielle de gérer l'authentification avec un service dédié, même si nous on se servira de l'API Gateway pour simplifier l'apprentissage.
+* Rappel sur la façon officielle de gérer l'authentification avec un service dédié, même si nous nous servirons de l'API Gateway pour simplifier l'apprentissage.
 
 **Challenge** : Implémenter une route d'authentification et un middleware de validation pour les autres routes dans l'API Gateway.
 
@@ -78,14 +78,14 @@ Journée asynchrone.
 * Expliquer comment transférer des informations aux autres services via les headers dans les proxies (userid pour filtrage du panier).
 * Même rappel que pour l'auth, l'API Gateway gérera les permissions pour simplifier.
 
-**Challenge** : Implémenter un middleware pour les permissions dans l'API Gateway. Gérer l'autorisation de lecture du panier en fonction du rôle et du userid présent dans le header dans le service panier.
+**Challenge** : Implémenter un middleware pour les permissions dans l'API Gateway. Gérer l'autorisation aussi au niveau du service panier en fonction du user et de son rôle.
 
 ## Jour 7 : Mise en cache
 
 **Objectifs** : Comprendre la mise en cache.
 
 * Correction détaillée du RBAC. Prendre le temps de tester tous les cas de figure.
-* Théorie sur les goulots d'étranglements, résilience et tolérance aux pannes.
+* Théorie sur les goulots d'étranglements, résilience et tolérance aux pannes de cette architecture.
 * Mise en cache
   * Avantages et inconvénients, cas d'usages...
   * Introduction à Redis
@@ -107,7 +107,7 @@ Journée asynchrone.
   * Démonstration de publish et subscribe avec Redis.
 * Retour sur le schéma d'architecture complet pour finaliser la saison.
 
-**Challenge** : Ajouter un système de publication via Redis lors de la modification d'un produit au niveau du service produc` et de souscription au niveau du service panier pour mettre à jour les prix.
+**Challenge** : Ajouter un système de publication via Redis lors de la modification d'un produit au niveau du service produit et de souscription au niveau du service panier pour mettre à jour les prix.
 
 ## Jour 9 Secu
 
@@ -117,7 +117,8 @@ Journée asynchrone.
 * Sécurité
   * Vulnérabilités
   * Sécurisation des communications : CORS
-* Surveillance et monitoring
+  * ...
+* Ouverture théorique à la surveillance et au monitoring
 
 **Challenge Pair-prog l'après-midi** : Créer le service `Liste d'envies` qui a une spécification proche de celle du panier.
 
