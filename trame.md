@@ -6,7 +6,7 @@ Basée sur le code présent dans ce repo. Le thème de l'application peut être 
 
 **Objectifs** : Comprendre ce qu'est une architecture microservices dans les grandes lignes et réaliser un premier service métier.
 
-* Théorie sur les microservices suivant le détail présenté dans [introduction.md](./docs/introduction.md).
+* Théorie sur les microservices suivant le détail présenté dans [introduction.md](./docs/introduction.md), ne pas trop détailler le schéma, il donne une vue d'ensemble pour le moment.
 * Remise en jambe sur les bases de NodeJS et Express sans Typescript.
 * Connexion à PostgreSQL avec Sequelize (déjà maîtrisé, servira de révision et de comparaison avec Prisma vu plus tard).
 * Mise en avant des avantages des microservices :
@@ -38,7 +38,7 @@ Basée sur le code présent dans ce repo. Le thème de l'application peut être 
 **Objectifs** : Comprendre le rôle de l'API Gateway et réaliser un point d'entrée pour les services.
 
 * Correction du service cart.
-* Aborder graduellement les différents concepts et parties importantes de l'architecture, pour finir par la vue d'ensemble comme présentée dans [cas-normal.md](./docs/cas-normal.md) sans parler des goulots d'étranglement et de la cohérence des données.
+* Aborder graduellement les différents concepts et parties importantes de l'architecture, pour finir par la vue d'ensemble comme présentée dans [concetps.md](./docs/concepts.md).
 * Découverte des proxies pour rediriger les requêtes vers les services appropriés.
 * Utilisation plus avancée de Typescript avec l'implémentation des proxies.
 * Suppression de l'exposition des ports des services produits et panier, toutes les requêtes client passeront par l'API Gateway.
@@ -85,7 +85,7 @@ Journée asynchrone.
 **Objectifs** : Comprendre la mise en cache.
 
 * Correction détaillée du RBAC. Prendre le temps de tester tous les cas de figure.
-* Théorie sur les goulots d'étranglements, résilience et tolérance aux pannes de cette architecture.
+* Théorie sur les goulots d'étranglements, résilience et tolérance aux pannes de cette architecture [(cas-normal.md)](./docs/cas-normal.md).
 * Mise en cache
   * Avantages et inconvénients, cas d'usages...
   * Introduction à Redis

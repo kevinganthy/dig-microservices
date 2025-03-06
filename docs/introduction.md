@@ -81,4 +81,4 @@
 
 ---
 
-Suivant : [Cas normal](./cas-normal.md)
+[Concepts](./concepts.md) :arrow-right:

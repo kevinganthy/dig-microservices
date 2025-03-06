@@ -1,6 +1,6 @@
 # Architecture complète
 
-![Architecture microservices complète](./µservices.drawio.png)
+![Architecture microservices complète](./µservices-resilient.drawio.png)
 
 ## Goulot d'étranglement
 
@@ -49,4 +49,4 @@ Dans la vraie vie, elle est peu utilisée dans les petites structures ou pour de
 
 ---
 
-Suivant : [Architecture simplifiée](./cas-simplifie.md)
+:arrow-left: [Concepts](./concepts.md) - [Architecture simplifiée](./cas-simplifie.md) :arrow-right:

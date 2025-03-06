@@ -170,3 +170,7 @@ Déclencher la publication **uniquement** quand le produit est modifié. Utilise
 #### Abonnement
 
 Ajouter un système d'abonnement via Redis lors de la modification d'un prix de produit pour mettre à jour les paniers au niveau du service `cart`.
+
+---
+
+:arrow-left: [Cas normal](./cas-normal.md)
