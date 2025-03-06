@@ -81,4 +81,4 @@
 
 ---
 
-[Concepts](./concepts.md) :arrow-right:
+[Concepts](./concepts.md) ➡️

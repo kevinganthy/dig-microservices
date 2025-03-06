@@ -29,6 +29,10 @@ Fonctionnement sans connaissance préalable des services, 2 types différents :
 - Client-side : le client connaît les services et les interroge directement (annuaire)
 - Server-side : le client interroge un service qui connaît les autres services (facteur)
 
+## Vue d'ensemble
+
+![Architecture microservices complète](./µservices-resilient.drawio.png)
+
 ---
 
-:arrow-left: [Introduction](./introduction.md) - [Cas normal](./cas-normal.md) :arrow-right:
+⬅️ [Introduction](./introduction.md) - [Cas normal](./cas-normal.md) ➡️

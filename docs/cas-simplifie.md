@@ -173,4 +173,4 @@ Ajouter un système d'abonnement via Redis lors de la modification d'un prix de 
 
 ---
 
-:arrow-left: [Cas normal](./cas-normal.md)
+⬅️ [Cas normal](./cas-normal.md)
